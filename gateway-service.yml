@@ -1,0 +1,49 @@
+# 服务器配置
+server:
+  # 服务器端口号，设置为8080
+  port: 8080
+
+# Eureka客户端配置
+eureka:
+  client:
+    serviceUrl:
+      # Eureka服务器的默认区域URL，指向本地8761端口的Eureka服务
+      defaultZone: http://localhost:8761/eureka/
+
+# Spring Cloud配置
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          # 启用服务发现定位器，允许通过服务名称进行路由
+          enabled: true
+      routes:
+        # 用户服务路由配置
+        - id: user-service
+          # 使用负载均衡方式指向user-service服务
+          uri: lb://user-service
+          predicates:
+            # 匹配路径为/api/users/**的请求
+            - Path=/api/users/**
+          filters:
+            # 去除路径中的第一个前缀
+            - StripPrefix=1
+        # 订单服务路由配置
+        - id: order-service
+          # 使用负载均衡方式指向order-service服务
+          uri: lb://order-service
+          predicates:
+            # 匹配路径为/api/orders/**的请求
+            - Path=/api/orders/**
+          filters:
+            # 去除路径中的第一个前缀
+            - StripPrefix=1
+
+# 管理端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        # 暴露所有管理端点
+        include: "*"
