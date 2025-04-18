@@ -1,0 +1,19 @@
+# server配置块，用于定义服务器相关的配置
+server:
+  # 服务器端口号，指定应用程序监听的端口
+  port: 8082
+
+# eureka配置块，用于定义Eureka客户端相关的配置
+eureka:
+  client:
+    serviceUrl:
+      # Eureka服务器的默认区域URL，指定Eureka服务器的地址
+      defaultZone: http://localhost:8761/eureka/
+
+# management配置块，用于定义管理端点相关的配置
+management:
+  endpoints:
+    web:
+      exposure:
+        # 暴露所有管理端点，允许通过Web访问所有管理端点
+        include: "*"
